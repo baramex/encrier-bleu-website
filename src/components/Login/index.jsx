@@ -6,7 +6,6 @@ import Footer from "../Layout/Footer";
 import Header from "../Layout/Header";
 import { Button } from "../Misc/Buttons";
 import { TextField } from "../Misc/Fields";
-import AcceptModal from "../Modals/Accept";
 
 export default function Login(props) {
     const history = useHistory();
@@ -25,8 +24,6 @@ export default function Login(props) {
 
     return (<>
         <Header {...props} />
-
-        <AcceptModal addAlert={props.addAlert} onAccept={() => history.push(redirect || "/user/@me")} open={firstLog} toAccept={[{ name: "le règlement", href: "/rules" }, { name: "la To Do List", href: "/to-do-list" }]} />
 
         <div className="pt-[4.5rem] text-white pb-20 px-6">
             <UserCircleIcon className="text-gray-100 mx-auto w-16 mt-11 mb-8" />

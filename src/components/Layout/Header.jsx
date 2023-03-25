@@ -1,4 +1,4 @@
-import logo from "../../images/logo.webp";
+import logo from "../../images/logo.png";
 
 import { Popover, Transition } from '@headlessui/react'
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ import UserMenu, { UserMenuTab } from "../Misc/UserMenu";
 
 function MobileNavLink({ href, children }) {
     return (
-        <Popover.Button as={Link} to={href} className="transition-colors py-1 px-2 text-md text-theme-700 hover:text-theme-800">
+        <Popover.Button as={Link} to={href} className="transition-colors py-1 px-2 text-md">
             {children}
         </Popover.Button>
     )
@@ -77,9 +77,6 @@ function MobileNavigation({ user, ...props }) {
                         className="z-20 absolute w-3/4 right-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-theme-50 p-4 text-gray-900 shadow-xl"
                     >
                         <MobileNavLink href="/">Accueil</MobileNavLink>
-                        <MobileNavLink href="/to-do-list">To Do List</MobileNavLink>
-                        <MobileNavLink href="/rules">Règlement</MobileNavLink>
-                        <MobileNavLink href="/team">L'équipe</MobileNavLink>
                         <hr className="m-2 border-gray-400/50" />
                         {!user && <MobileNavLink href="/login">Se connecter</MobileNavLink>}
                         {user && <UserMenuTab user={user} {...props} />}
@@ -93,21 +90,16 @@ function MobileNavigation({ user, ...props }) {
 
 export default function Header({ user, setUser, addAlert }) {
     return (<>
-        <header className="z-10 py-3 px-5 top-0 fixed w-full bg-[#393d32]">
+        <header className="z-10 py-3 px-5 top-0 w-full bg-indigo-900/10">
             <div className="z-10 relative flex items-center min-h-[3.25rem] md:min-h-[3rem]">
-                <Link className="absolute left-0" to="/">
+                <Link className="absolute left-0 flex items-center gap-2" to="/">
                     <img
                         src={logo}
-                        alt="Nahel Transport"
-                        className="h-14 md:h-12 rounded-full" />
+                        alt="Encrier Bleu"
+                        className="h-14 md:h-12" />
+                    <h1 className="text-white text-xl font-semibold">Encrier Bleu</h1>
                 </Link>
                 <nav className="w-full flex justify-end md:justify-center">
-                    <div className="flex items-center md:gap-x-6 hidden md:block">
-                        <NavLink href="/">Accueil</NavLink>
-                        <NavLink href="/to-do-list">To Do List</NavLink>
-                        <NavLink href="/rules">Règlement</NavLink>
-                        <NavLink href="/team">L'équipe</NavLink>
-                    </div>
                     <div className="hidden md:flex absolute right-0 top-0 h-full items-center gap-x-5 md:gap-x-8">
                         {
                             user ?
@@ -127,7 +119,7 @@ export default function Header({ user, setUser, addAlert }) {
 
 function NavLink({ href, children }) {
     return (
-        <Link to={href} className={clsx("transition-colors py-1 px-2 text-sm hover:text-red-200", window.location.pathname === href ? "text-red-200" : "text-white")}>
+        <Link to={href} className="transition-colors py-1 px-2 text-sm text-white hover:text-indigo-200">
             {children}
         </Link>
     )
