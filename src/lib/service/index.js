@@ -39,7 +39,7 @@ export function fetchData(addAlert, setter, func, softRej = true, ...params) {
             setter(data);
             res(data);
         }).catch(err => {
-            addAlert({ type: "error", title: "Erreur récupération API: " + (err.message || "Une erreur est survenue."), ephemeral: true });
+            addAlert({ type: "error", title: "Erreur récupération API: " + (err.message?.message || err.message || "Une erreur est survenue."), ephemeral: true });
             if (softRej) res(undefined);
             else rej(err)
         });

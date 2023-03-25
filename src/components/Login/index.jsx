@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { login } from "../../lib/service/authentification";
 import Footer from "../Layout/Footer";
 import Header from "../Layout/Header";
-import { Button } from "../Misc/Buttons";
 import { TextField } from "../Misc/Fields";
 
 export default function Login(props) {
@@ -44,9 +43,9 @@ export default function Login(props) {
                         autoComplete="current-password"
                         placeholder="•••••••••"
                         required />
-                    <Button className="mx-auto w-full py-3 md:py-2 md:w-1/3 mt-3">
+                    <button className="mx-auto w-full py-3 md:py-2 md:w-1/3 mt-3">
                         Se connecter
-                    </Button>
+                    </button>
                 </form>
             </div>
         </div>

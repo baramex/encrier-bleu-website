@@ -5,10 +5,18 @@ html {
 }
 
 body {
-    background: linear-gradient(160deg, #272964 0%, #000115 100%);
+    background: linear-gradient(155deg, #272964 0%, #000115 100%);
 }
 
 #root {
     min-height: 100vh;
     position: relative;
+}
+
+.article-container {
+    background: linear-gradient(160deg, #22245c80 0%, #050722 100%);
+}
+
+.modal {
+    background: linear-gradient(155deg, #23276b 0%, #121552 100%);
 }
