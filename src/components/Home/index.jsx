@@ -1,35 +1,64 @@
 import { useEffect, useState } from "react";
 import { fetchData } from "../../lib/service";
-import { getArticle, getArticles } from "../../lib/service/article";
+import { getArticle, getArticles, getPageCount } from "../../lib/service/article";
 import Footer from "../Layout/Footer";
 import Header from "../Layout/Header";
 import { LabelledSwitch } from "../Misc/Switch";
 import noImage from "../../images/no-image.svg"
-import { CalendarDaysIcon, MapPinIcon, PencilIcon, TagIcon } from "@heroicons/react/24/solid";
+import { ArrowLongLeftIcon, ArrowLongRightIcon, CalendarDaysIcon, MapPinIcon, PencilIcon, TagIcon } from "@heroicons/react/24/solid";
 import { formatDate } from "../../lib/utils/date";
 import { capitalize } from "../../lib/utils/string";
 import Loading from "../Misc/Loading";
 import { useHistory } from "react-router-dom";
 import ArticleModal from "../Modals/Article";
+import clsx from "clsx";
 
 export default function Home(props) {
-    const [articles, setArticles] = useState(undefined);
-    const [category, setCategory] = useState(Number(sessionStorage.getItem("articleCategory")) || 0);
-    const [page, setPage] = useState(0);
-    const [article, setArticle] = useState(undefined);
-
     const history = useHistory();
-    const articleId = new URLSearchParams(history.location.search).get("article");
+    const query = new URLSearchParams(history.location.search);
+
+    const [articles, setArticles] = useState(undefined);
+    const [category, setCategory] = useState(Number(localStorage.getItem("articleCategory")) || 0);
+    const [page, setPage] = useState(Math.max(Number(query.get("page")) || 0, 0));
+    const [maxPage, setMaxPage] = useState(undefined);
+    const [article, setArticle] = useState(false);
+    const [articleId, setArticleId] = useState(query.get("article"));
+
+    history.listen((location, action) => {
+        const nquery = new URLSearchParams(location.search);
+        if (nquery.get("article") !== articleId) setArticleId(nquery.get("article"));
+        if (nquery.get("page") !== page) setPage(Math.max(Number(nquery.get("page")) || 0, 0));
+    });
+
+    // TO VERIFY: max page
 
     useEffect(() => {
-        setPage(0);
-        sessionStorage.setItem("articleCategory", category);
+        if (page > maxPage) {
+            setPage(maxPage);
+            setArticles(undefined);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [maxPage]);
+
+    useEffect(() => {
+        localStorage.setItem("articleCategory", category);
         if (articles) setArticles(undefined);
+        fetchData(props.addAlert, v => setMaxPage(v - 1), getPageCount, true, category === 0 ? "business" : "-business");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category]);
 
     useEffect(() => {
         if (articles) setArticles(undefined);
+        const query = new URLSearchParams(history.location.search);
+        if (page !== 0 && Number(query.get("page")) !== page) {
+            query.set("page", page);
+            history.push("?" + query.toString());
+        }
+        if (page === 0 && query.get("page")) {
+            const query = new URLSearchParams(history.location.search);
+            query.delete("page", page);
+            history.push("?" + query.toString());
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
@@ -50,29 +79,88 @@ export default function Home(props) {
                 fetchData(props.addAlert, setArticle, getArticle, true, articleId);
             }
         }
+        else if (!articleId) {
+            setArticle(undefined);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [articleId]);
 
     useEffect(() => {
-        if (!article) history.push("/");
+        if (article && articleId !== article._id) {
+            setArticleId(article._id);
+        }
+        if (articleId && article === undefined) {
+            setArticleId(undefined);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [article]);
 
+    useEffect(() => {
+        const query = new URLSearchParams(history.location.search);
+        if (articleId && query.get("article") !== articleId) {
+            query.set("article", articleId);
+            history.push("?" + query.toString());
+        }
+        if (!articleId && query.get("article")) {
+            const query = new URLSearchParams(history.location.search);
+            query.delete("article");
+            history.push("?" + query.toString());
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [articleId]);
+
     return (<>
-        <ArticleModal article={article} onClose={setArticle} open={!!article} />
+        <ArticleModal addAlert={props.addAlert} article={article || undefined} onClose={() => setArticleId(undefined)} open={!!article} />
 
         <Header {...props} />
         <section className="px-20 py-20 h-80 w-full flex justify-center">
             <div className="z-0 fixed flex items-center gap-16 flex-col">
                 <h1 className="text-5xl font-medium text-white">Les dernières actualités</h1>
-                <LabelledSwitch state={category} setState={setCategory} states={["Finance", "International"]} />
+                <LabelledSwitch state={category} setState={v => { setPage(0); setMaxPage(undefined); setCategory(v); }} states={["Finance", "International"]} />
             </div>
         </section>
         <section className="article-container backdrop-blur-md min-h-screen pb-16">
             <div className="grid mx-auto px-10 max-w-screen-2xl py-5 gap-4">
                 {
-                    articles ? articles?.map((article, i) => <Article key={i} article={article} onClick={() => { history.push("?article=" + article._id); setArticle(article) }} />) :
+                    articles ? articles?.map((article, i) => <Article key={i} article={article} onClick={() => setArticle(article)} />) :
                         <div className="flex justify-center p-4"><Loading height="h-12" width="w-12" /></div>
+                }
+                {page !== undefined && maxPage !== undefined &&
+                    <nav className="flex items-center justify-between border-t border-gray-200 mt-5 px-4 sm:px-0">
+                        <div className="-mt-px flex w-0 flex-1">
+                            <button
+                                onClick={() => setPage(Math.max(page - 1, 0))}
+                                className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-200 hover:border-gray-300 hover:text-gray-300"
+                            >
+                                <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                Previous
+                            </button>
+                        </div>
+                        {
+                            new Array(Math.min(3, maxPage + 1)).fill(0).map((_, i) => <div key={i} className="hidden md:-mt-px md:flex">
+                                <button onClick={() => setPage(i)} className={clsx("inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium", page === i ? "border-indigo-400 text-indigo-400" : "border-transparent text-gray-200 hover:border-gray-300 hover:text-gray-300")}>{i + 1}</button>
+                            </div>)
+                        }
+                        {maxPage > 5 &&
+                            <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
+                                ...
+                            </span>
+                        }
+                        {
+                            new Array(Math.max(Math.min(3, maxPage - 2), 0)).fill(0).map((_, i) => <div key={i} className="hidden md:-mt-px md:flex">
+                                <button onClick={() => setPage(i + maxPage - 2)} className={clsx("inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium", page === i + maxPage - 2 ? "border-indigo-400 text-indigo-400" : "border-transparent text-gray-200 hover:border-gray-300 hover:text-gray-300")}>{i + maxPage - 2}</button>
+                            </div>)
+                        }
+                        <div className="-mt-px flex w-0 flex-1 justify-end">
+                            <button
+                                onClick={() => setPage(Math.min(page + 1, maxPage))}
+                                className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-200 hover:border-gray-300 hover:text-gray-300"
+                            >
+                                Next
+                                <ArrowLongRightIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </nav>
                 }
             </div>
         </section>
