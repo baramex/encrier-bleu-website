@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchData } from "../../lib/service";
 import { getArticle, getArticles, getPageCount } from "../../lib/service/article";
 import Footer from "../Layout/Footer";
 import Header from "../Layout/Header";
 import { LabelledSwitch } from "../Misc/Switch";
 import noImage from "../../images/no-image.svg"
-import { ArrowLongLeftIcon, ArrowLongRightIcon, CalendarDaysIcon, MapPinIcon, PencilIcon, TagIcon } from "@heroicons/react/24/solid";
+import { ArrowLongLeftIcon, ArrowLongRightIcon, CalendarDaysIcon, ChevronUpIcon, MapPinIcon, PencilIcon, TagIcon } from "@heroicons/react/24/solid";
 import { formatDate } from "../../lib/utils/date";
 import { capitalize } from "../../lib/utils/string";
 import Loading from "../Misc/Loading";
@@ -16,6 +16,8 @@ import clsx from "clsx";
 export default function Home(props) {
     const history = useHistory();
     const query = new URLSearchParams(history.location.search);
+
+    const upArrow = useRef();
 
     const [articles, setArticles] = useState(undefined);
     const [category, setCategory] = useState(Number(localStorage.getItem("articleCategory")) || 0);
@@ -109,11 +111,35 @@ export default function Home(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [articleId]);
 
+    useEffect(() => {
+        function onScroll() {
+            const v = window.scrollY;
+
+            if (v >= window.screen.height && !upArrow.current?.classList.contains("block")) {
+                upArrow.current?.classList.add("block");
+                upArrow.current?.classList.remove("hidden");
+            }
+            if (v < window.screen.height && !upArrow.current?.classList.contains("hidden")) {
+                upArrow.current?.classList.add("hidden");
+                upArrow.current?.classList.remove("block");
+            }
+        }
+
+        window.addEventListener("scroll", onScroll);
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+        };
+    }, []);
+
     return (<>
         <ArticleModal addAlert={props.addAlert} article={article || undefined} onClose={() => setArticleId(undefined)} open={!!article} />
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} ref={upArrow} className="bg-gray-200/80 fixed rounded-full bottom-5 right-5 hidden p-3 z-10">
+            <ChevronUpIcon className="w-5" />
+        </button>
 
         <Header {...props} />
-        <section className="px-20 py-20 h-80 w-full flex justify-center">
+        <section className="px-20 py-20 h-80 w-full flex justify-center mt-20">
             <div className="z-0 fixed flex items-center gap-16 flex-col">
                 <h1 className="text-5xl font-medium text-white">Les dernières actualités</h1>
                 <LabelledSwitch state={category} setState={v => { setPage(0); setMaxPage(undefined); setCategory(v); }} states={["Finance", "International"]} />

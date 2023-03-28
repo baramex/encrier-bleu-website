@@ -15,18 +15,18 @@ export default function Login(props) {
     const [firstLog, setFirstLog] = useState(false);
 
     useEffect(() => {
-        if (props.user) history.push(redirect || "/user/@me");
+        if (props.user) history.push(redirect || "/chat");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (props.user && !firstLog) return null;
 
-    return (<>
+    return (<div className="flex flex-col min-h-screen">
         <Header {...props} />
 
-        <div className="pt-[4.5rem] text-white pb-20 px-6">
+        <div className="pt-[4.5rem] text-white pb-20 px-6 flex-1">
             <UserCircleIcon className="text-gray-100 mx-auto w-16 mt-11 mb-8" />
-            <h1 className="text-center text-4xl font-medium mb-14">Espace Employé - Connexion</h1>
+            <h1 className="text-center text-4xl font-medium mb-14">Connexion</h1>
             <div className="md:px-6 max-w-xl mx-auto">
                 <form onSubmit={e => handleLogin(e, props.addAlert, props.setUser, setFirstLog, history, redirect)} className="flex flex-col gap-6">
                     <TextField
@@ -43,14 +43,14 @@ export default function Login(props) {
                         autoComplete="current-password"
                         placeholder="•••••••••"
                         required />
-                    <button className="mx-auto w-full py-3 md:py-2 md:w-1/3 mt-3">
+                    <button className="transition-colors text-sm bg-white/25 rounded-lg mx-auto w-full py-3 md:py-2 md:w-auto mt-3 px-6 hover:bg-white/30">
                         Se connecter
                     </button>
                 </form>
             </div>
         </div>
         <Footer {...props} />
-    </>)
+    </div>)
 }
 
 async function handleLogin(e, addAlert, setUser, setFirstLog, history, redirect) {
@@ -72,10 +72,10 @@ async function handleLogin(e, addAlert, setUser, setFirstLog, history, redirect)
         else {
             user = { ...user, firstlog: undefined };
             setUser(user);
-            history.push(redirect || "/user/@me");
+            history.push(redirect || "/chat");
         }
     } catch (error) {
-        addAlert({ type: "error", title: error.message || "Une erreur est survenue.", ephemeral: true });
+        addAlert({ type: "error", title: error.message?.message || error.message || "Une erreur est survenue.", ephemeral: true });
         elements.forEach(el => el.disabled = false);
     }
 }

@@ -1,24 +1,13 @@
 import { Menu, Transition } from "@headlessui/react";
-import { ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArrowLeftOnRectangleIcon, BuildingOffice2Icon, UserGroupIcon, UserIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftOnRectangleIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { Fragment } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { logout } from "../../lib/service/authentification";
-import { hasPermission, PERMISSIONS } from "../../lib/utils/permissions";
 
 const userNavigation = [
-    [{ Icon: UserIcon, name: 'Mon compte', href: '/user/@me' }],
-    [
-        { Icon: ArchiveBoxArrowDownIcon, show: (user) => hasPermission(user, PERMISSIONS.CREATE_REPORT), name: 'Rapport du Matin', href: '/user/@me?newMorningReport' },
-        { Icon: BuildingOffice2Icon, show: (user) => hasPermission(user, PERMISSIONS.CREATE_REPORT), name: 'Adresse Imprécise', href: '/user/@me?newImpreciseAddressReport' },
-        { Icon: ArchiveBoxIcon, show: (user) => hasPermission(user, PERMISSIONS.CREATE_REPORT), name: 'Rapport du Soir', href: '/user/@me?newReport' },
-
-        { Icon: ArchiveBoxArrowDownIcon, show: (user) => hasPermission(user, PERMISSIONS.VIEW_REPORTS), name: 'Rapports du Matin', href: '/admin/reports/m' },
-        { Icon: BuildingOffice2Icon, show: (user) => hasPermission(user, PERMISSIONS.VIEW_REPORTS), name: 'Adresses Imprécises', href: '/admin/reports/a' },
-        { Icon: ArchiveBoxIcon, show: (user) => hasPermission(user, PERMISSIONS.VIEW_REPORTS), name: 'Rapports du Soir', href: '/admin/reports/e' },
-        { Icon: UserGroupIcon, show: (user) => hasPermission(user, PERMISSIONS.VIEW_PROFILES), name: 'Personnel', href: '/admin/staff' }
-    ],
+    [{ Icon: ChatBubbleLeftRightIcon, name: 'Chat', href: '/chat' }],
     [{ Icon: ArrowLeftOnRectangleIcon, name: 'Se déconnecter', onClick: handleLogout, color: "text-red-600", iconColor: "text-red-600", colorHover: "hover:text-red-700", iconColorHover: "group-hover:text-red-700" }],
 ];
 
@@ -51,7 +40,7 @@ export function UserMenuTab({ user, setUser, addAlert, Element = "div", navigate
 
     return (<>
         <div className={clsx(Element === "div" ? "px-3 py-2" : "p-3")}>
-            <p className={clsx("truncate font-medium text-theme-900", Element === "div" ? "text-md" : "text-sm")}>{user.name.firstname} {user.name.lastname}</p>
+            <p className={clsx("truncate font-medium text-theme-900", Element === "div" ? "text-md" : "text-sm")}>{user.email}</p>
             <p className={clsx("text-theme-700/75", Element === "div" ? "text-md" : "text-sm")}>{user.role.name}</p>
         </div>
         {navigate.map((items, i) => (
@@ -120,7 +109,7 @@ async function handleLogout(e, setUser, addAlert, history) {
         await logout();
         setUser(null);
         addAlert({ type: "success", title: "Déconnecté.", ephemeral: true });
-        if (document.location.pathname.startsWith("/user") || document.location.pathname.startsWith("/report") || document.location.pathname.startsWith("/admin")) history.push("/");
+        if (document.location.pathname === "/chat") history.push("/");
     } catch (error) {
         addAlert({ type: "error", title: "Erreur lors de la déconnexion: " + (error.message || "Une erreur est survenue."), ephemeral: true });
     }

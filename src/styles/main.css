@@ -6,6 +6,7 @@ html {
 
 body {
     background: linear-gradient(155deg, #272964 0%, #000115 100%);
+    min-height: 100vh;
 }
 
 #root {

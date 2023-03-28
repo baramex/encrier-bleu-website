@@ -4,8 +4,7 @@ import { EyeIcon, EyeSlashIcon, QuestionMarkCircleIcon } from "@heroicons/react/
 import Tooltip from "./Tooltip";
 
 const fieldClassname = {
-    white: "block w-full bg-white [[changed_&]]:border-blue-400 focus:[[changed_&]]:border-blue-500 [&:not([empty])]:invalid:border-red-500 [&:not([empty])]:invalid:focus:border-red-600 disabled:cursor-not-allowed disabled:bg-theme-50 disabled:text-theme-500 shadow-sm rounded-md border border-transparent px-3 py-2.5 text-theme-800 placeholder-gray-400 transition-colors focus:border-theme-300 focus:outline-none focus:ring-0 sm:text-sm",
-    theme: "block w-full bg-theme-50 [[changed_&]]:border-blue-400 focus:[[changed_&]]:border-blue-500 [&:not([empty])]:invalid:border-red-500 [&:not([empty])]:invalid:focus:border-red-600 disabled:cursor-not-allowed disabled:bg-theme-50 disabled:text-theme-500 shadow-sm rounded-md border border-theme-200 px-3 py-2.5 text-theme-800 placeholder-gray-400 transition-colors focus:border-theme-300 focus:outline-none focus:ring-0 sm:text-sm",
+    white: "block w-full bg-white [[changed_&]]:border-blue-400 focus:[[changed_&]]:border-blue-500 [&:not([empty])]:invalid:border-red-500 [&:not([empty])]:invalid:focus:border-red-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-700 shadow-sm rounded-md border border-transparent px-3 py-2.5 text-gray-800 placeholder-gray-400 transition-colors focus:outline-none focus:ring-0 sm:text-sm",
 };
 
 export function Label({ optinal, children, showRequired, variant = "white", tooltip, className, id }) {

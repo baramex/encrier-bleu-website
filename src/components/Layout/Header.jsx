@@ -3,7 +3,7 @@ import logo from "../../images/logo.png";
 import { Popover, Transition } from '@headlessui/react'
 import { Link } from "react-router-dom";
 import clsx from 'clsx';
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import UserMenu, { UserMenuTab } from "../Misc/UserMenu";
 
 function MobileNavLink({ href, children }) {
@@ -88,9 +88,32 @@ function MobileNavigation({ user, ...props }) {
     )
 }
 
-export default function Header({ user, setUser, addAlert }) {
+export default function Header({ user, setUser, addAlert, fixed = true }) {
+    const header = useRef();
+
+    useEffect(() => {
+        if (!fixed) return;
+
+        function onScroll() {
+            const v = window.scrollY;
+
+            if (v > 380 && !header.current?.classList.contains("bg-indigo-900/10") && !header.current?.classList.contains("backdrop-blur-md")) {
+                header.current?.classList.add("bg-indigo-900/10", "backdrop-blur-md");
+            }
+            if (v <= 380 && header.current?.classList.contains("bg-indigo-900/10") && header.current?.classList.contains("backdrop-blur-md")) {
+                header.current?.classList.remove("bg-indigo-900/10", "backdrop-blur-md");
+            }
+        }
+
+        window.addEventListener("scroll", onScroll);
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+        };
+    }, []);
+
     return (<>
-        <header className="z-10 py-3 px-5 top-0 w-full bg-indigo-900/10">
+        <header ref={header} className={clsx("transition-colors transition-300 z-10 py-3 px-5 top-0 w-full", fixed ? "fixed" : "")}>
             <div className="z-10 relative flex items-center min-h-[3.25rem] md:min-h-[3rem]">
                 <Link className="absolute left-0 flex items-center gap-2" to="/">
                     <img
@@ -105,7 +128,9 @@ export default function Header({ user, setUser, addAlert }) {
                             user ?
                                 <UserMenu user={user} setUser={setUser} addAlert={addAlert} />
                                 :
-                                <NavLink href="/login">Se connecter</NavLink>
+                                document.location.pathname === "/login" ?
+                                    <NavLink href="/">Accueil</NavLink> :
+                                    <NavLink href="/login">Se connecter</NavLink>
                         }
                     </div>
                 </nav>
