@@ -141,14 +141,25 @@ export default function Home(props) {
                                 <button onClick={() => setPage(i)} className={clsx("inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium", page === i ? "border-indigo-400 text-indigo-400" : "border-transparent text-gray-200 hover:border-gray-300 hover:text-gray-300")}>{i + 1}</button>
                             </div>)
                         }
-                        {maxPage > 5 &&
+                        {
+                            page > 2 && page !== 3 ? <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
+                                ...
+                            </span> : null}
+                        {
+                            page > 2 && page < maxPage - 2 ?
+                                <div className="hidden md:-mt-px md:flex">
+                                    <button onClick={() => setPage(page)} className="inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium border-indigo-400 text-indigo-400">{page + 1}</button>
+                                </div> : null
+                        }
+                        {
+                            page !== maxPage - 2 && page < maxPage - 3 &&
                             <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
                                 ...
                             </span>
                         }
                         {
                             new Array(Math.max(Math.min(3, maxPage - 2), 0)).fill(0).map((_, i) => <div key={i} className="hidden md:-mt-px md:flex">
-                                <button onClick={() => setPage(i + maxPage - 2)} className={clsx("inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium", page === i + maxPage - 2 ? "border-indigo-400 text-indigo-400" : "border-transparent text-gray-200 hover:border-gray-300 hover:text-gray-300")}>{i + maxPage - 2}</button>
+                                <button onClick={() => setPage(i + maxPage - 2)} className={clsx("inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium", page === i + maxPage - 2 ? "border-indigo-400 text-indigo-400" : "border-transparent text-gray-200 hover:border-gray-300 hover:text-gray-300")}>{i + maxPage - 1}</button>
                             </div>)
                         }
                         <div className="-mt-px flex w-0 flex-1 justify-end">
