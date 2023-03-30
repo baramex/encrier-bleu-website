@@ -33,7 +33,7 @@ export default function Footer() {
                 ))}
             </div>
             <div className="mt-8 md:order-1 md:mt-0">
-                <p className="text-center text-xs leading-5 text-gray-400">
+                <p className="text-center text-sm leading-5 text-gray-400">
                     &copy; 2023 Encrier Bleu. Tous droits réservés.
                 </p>
             </div>

@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { ArrowLeftOnRectangleIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftOnRectangleIcon, ChatBubbleLeftRightIcon, HomeIcon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { Fragment } from "react";
@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom";
 import { logout } from "../../lib/service/authentification";
 
 const userNavigation = [
-    [{ Icon: ChatBubbleLeftRightIcon, name: 'Chat', href: '/chat' }],
+    [{ Icon: HomeIcon, name: 'Accueil', href: '/' }, { Icon: ChatBubbleLeftRightIcon, name: 'Chat', href: '/chat' }],
     [{ Icon: ArrowLeftOnRectangleIcon, name: 'Se déconnecter', onClick: handleLogout, color: "text-red-600", iconColor: "text-red-600", colorHover: "hover:text-red-700", iconColorHover: "group-hover:text-red-700" }],
 ];
 

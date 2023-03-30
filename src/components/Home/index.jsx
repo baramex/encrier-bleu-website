@@ -115,13 +115,13 @@ export default function Home(props) {
         function onScroll() {
             const v = window.scrollY;
 
-            if (v >= window.screen.height && !upArrow.current?.classList.contains("block")) {
-                upArrow.current?.classList.add("block");
-                upArrow.current?.classList.remove("hidden");
+            if (v >= window.screen.height && !upArrow.current?.classList.contains("active")) {
+                upArrow.current?.classList.add("scale-100", "opacity-100");
+                upArrow.current?.classList.remove("scale-0", "opacity-0");
             }
-            if (v < window.screen.height && !upArrow.current?.classList.contains("hidden")) {
-                upArrow.current?.classList.add("hidden");
-                upArrow.current?.classList.remove("block");
+            if (v < window.screen.height && !upArrow.current?.classList.contains("active")) {
+                upArrow.current?.classList.remove("scale-100", "opacity-100");
+                upArrow.current?.classList.add("scale-0", "opacity-0");
             }
         }
 
@@ -134,7 +134,7 @@ export default function Home(props) {
 
     return (<>
         <ArticleModal addAlert={props.addAlert} article={article || undefined} onClose={() => setArticleId(undefined)} open={!!article} />
-        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} ref={upArrow} className="bg-gray-200/80 fixed rounded-full bottom-5 right-5 hidden p-3 z-10">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} ref={upArrow} className="transition bg-gray-200/80 opacity-0 fixed rounded-full bottom-5 right-5 p-3 scale-0 z-10">
             <ChevronUpIcon className="w-5" />
         </button>
 
