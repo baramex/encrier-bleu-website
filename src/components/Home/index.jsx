@@ -45,7 +45,7 @@ export default function Home(props) {
     useEffect(() => {
         localStorage.setItem("articleCategory", category);
         if (articles) setArticles(undefined);
-        fetchData(props.addAlert, v => setMaxPage(v - 1), getPageCount, true, category === 0 ? "business" : "-business");
+        fetchData(props.addAlert, v => setMaxPage(Math.max(v - 1, 0)), getPageCount, true, category === 0 ? "business" : "-business");
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category]);
 
