@@ -5,10 +5,16 @@ import { Link } from "react-router-dom";
 import clsx from 'clsx';
 import { Fragment, useEffect, useRef } from "react";
 import UserMenu, { UserMenuTab } from "../Misc/UserMenu";
+import { ArrowRightOnRectangleIcon, HomeIcon } from "@heroicons/react/24/outline";
 
-function MobileNavLink({ href, children }) {
+function MobileNavLink({ href, children, Icon }) {
     return (
-        <Popover.Button as={Link} to={href} className="transition-colors py-1 px-2 text-md">
+        <Popover.Button
+            as={Link}
+            to={href}
+            className='group flex items-center px-3 py-1 text-md text-gray-700 hover:text-gray-800'
+        >
+            <Icon className="mr-3 h-5 w-5 text-gray-700 group-hover:text-gray-800" aria-hidden="true" />
             {children}
         </Popover.Button>
     )
@@ -18,7 +24,7 @@ function MobileNavIcon({ open }) {
     return (
         <svg
             aria-hidden="true"
-            className="w-8 overflow-visible stroke-theme-50"
+            className="w-8 overflow-visible stroke-white"
             fill="none"
             strokeWidth={2}
             strokeLinecap="round"
@@ -74,13 +80,15 @@ function MobileNavigation({ user, ...props }) {
                 >
                     <Popover.Panel
                         as="nav"
-                        className="z-20 absolute w-3/4 right-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-theme-50 p-4 text-gray-900 shadow-xl"
+                        className="z-20 absolute w-3/4 right-0 top-full mt-4 flex origin-top flex-col rounded-2xl bg-indigo-50 p-4 text-gray-900 shadow-xl"
                     >
-                        <MobileNavLink href="/">Accueil</MobileNavLink>
-                        <hr className="m-2 border-gray-400/50" />
-                        {!user && <MobileNavLink href="/login">Se connecter</MobileNavLink>}
-                        {user && <UserMenuTab user={user} {...props} />}
-                        <p className="text-gray-400 font-light text-xs text-center mt-2"><a className="mr-5" href="/mentions légales.pdf" download>Mentions Légales</a><a href="/rgpd.pdf" download>RGPD</a></p>
+                        {!user && <>
+                            <MobileNavLink href="/" Icon={HomeIcon}>Accueil</MobileNavLink>
+                            <hr className="m-2 border-gray-400/50" />
+                        </>
+                        }
+                        {!user && <MobileNavLink href="/login" Icon={ArrowRightOnRectangleIcon}>Se connecter</MobileNavLink>}
+                        {user && <div className="divide-y divide-gray-300"><UserMenuTab user={user} {...props} /></div>}
                     </Popover.Panel>
                 </Transition.Child>
             </Transition.Root>

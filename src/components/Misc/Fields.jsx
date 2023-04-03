@@ -10,7 +10,7 @@ const fieldClassname = {
 export function Label({ optinal, children, showRequired, variant = "white", tooltip, className, id }) {
     return (<label
         htmlFor={id}
-        className={clsx("mb-2 block text-sm font-medium", variant === "white" ? "text-white" : "text-theme-800", className, showRequired && "after:content-['_*'] after:text-red-600")}
+        className={clsx("mb-2 block text-sm font-medium", variant === "white" ? "text-white" : "text-indigo-800", className, showRequired && "after:content-['_*'] after:text-red-600")}
     >
         {children}
         {optinal && <span className='text-xs text-gray-500 ml-2'>({optinal})</span>}
@@ -61,8 +61,8 @@ export function TextField({
                     <Field variant={variant} Element="input" id={id} type={showPassword ? "text" : "password"} {...props} className={clsx("peer pr-10", inputClassName)} />
                     <input id={"show-" + id} name='show' checked={showPassword} onChange={e => setShowPassword(e.target.checked)} className='hidden' type="checkbox" />
                     <label htmlFor={"show-" + id} className={clsx('transition-transform absolute flex items-center mr-3 right-0 top-0 h-full peer-hover:translate-y-0 peer-focus:translate-y-0 hover:translate-y-0 cursor-pointer', showPassword ? "translate-y-0" : "-translate-y-full")}>
-                        <EyeIcon className={clsx('stroke-theme-500 stroke-1 hover:stroke-theme-700', showPassword ? "hidden" : "")} width="22" />
-                        <EyeSlashIcon className={clsx('stroke-1 stroke-theme-500 hover:stroke-theme-700', !showPassword ? "hidden" : "")} width="22" />
+                        <EyeIcon className={clsx('stroke-indigo-500 stroke-1 hover:stroke-indigo-700', showPassword ? "hidden" : "")} width="22" />
+                        <EyeSlashIcon className={clsx('stroke-1 stroke-indigo-500 hover:stroke-indigo-700', !showPassword ? "hidden" : "")} width="22" />
                     </label>
                 </div>
                 :

@@ -29,7 +29,7 @@ export default function UserMenu({ user, setUser, addAlert }) {
             leaveTo="transform opacity-0 scale-95"
         >
             <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {UserMenuTab({ user, setUser, addAlert, Element: Menu.Item, navigate: userNavigation })}
+                {UserMenuTab({ user, setUser, addAlert, Element: Menu.Item })}
             </Menu.Items>
         </Transition>
     </Menu>);
@@ -40,8 +40,8 @@ export function UserMenuTab({ user, setUser, addAlert, Element = "div", navigate
 
     return (<>
         <div className={clsx(Element === "div" ? "px-3 py-2" : "p-3")}>
-            <p className={clsx("truncate font-medium text-theme-900", Element === "div" ? "text-md" : "text-sm")}>{user.email}</p>
-            <p className={clsx("text-theme-700/75", Element === "div" ? "text-md" : "text-sm")}>{user.role.name}</p>
+            <p className={clsx("truncate font-medium text-gray-900", Element === "div" ? "text-md" : "text-sm")}>{user.email}</p>
+            <p className={clsx("text-gray-700/75", Element === "div" ? "text-md" : "text-sm")}>{user.role.name}</p>
         </div>
         {navigate.map((items, i) => (
             <div className='py-1' key={i}>
@@ -53,17 +53,17 @@ export function UserMenuTab({ user, setUser, addAlert, Element = "div", navigate
                                     <Link
                                         to={item.href}
                                         className={clsx(
-                                            'group flex items-center px-3 py-1 text-md', item.color || 'text-theme-700', item.colorHover || "hover:text-theme-800",
+                                            'group flex items-center px-3 py-1 text-md', item.color || 'text-gray-700', item.colorHover || "hover:text-gray-800",
                                             item.className
                                         )}
                                     >
-                                        {<item.Icon className={clsx("mr-3 h-5 w-5", item.iconColor || "text-theme-700", item.iconColorHover || "group-hover:text-theme-800")} aria-hidden="true" />}
+                                        {<item.Icon className={clsx("mr-3 h-5 w-5", item.iconColor || "text-gray-700", item.iconColorHover || "group-hover:text-gray-800")} aria-hidden="true" />}
                                         {item.name}
                                     </Link> :
                                     <button
                                         onClick={e => item.onClick(e, setUser, addAlert, history)}
                                         className={clsx(
-                                            'group flex items-center px-3 py-1 text-md w-full focus:outline-none', item.color || 'text-theme-700', item.colorHover || "hover:text-theme-800",
+                                            'group flex items-center px-3 py-1 text-md w-full focus:outline-none', item.color || 'text-gray-700', item.colorHover || "hover:text-gray-800",
                                             item.className
                                         )}
                                     >

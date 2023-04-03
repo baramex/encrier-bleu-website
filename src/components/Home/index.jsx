@@ -141,7 +141,7 @@ export default function Home(props) {
         <Header {...props} />
         <section className="px-20 py-20 h-80 w-full flex justify-center mt-20">
             <div className="z-0 fixed flex items-center gap-16 flex-col">
-                <h1 className="text-5xl font-medium text-white">Les dernières actualités</h1>
+                <h1 className="text-5xl font-medium text-white text-center">Les dernières actualités</h1>
                 <LabelledSwitch state={category} setState={v => { setPage(0); setMaxPage(undefined); setCategory(v); }} states={["Finance", "International"]} />
             </div>
         </section>
@@ -207,30 +207,30 @@ export default function Home(props) {
 
 function Article({ article, ...props }) {
     return (
-        <div role="button" className="grid grid-cols-4 gap-8 p-4 group" {...props}>
+        <div role="button" className="grid grid-rows-1 md:grid-cols-4 gap-8 p-4 group" {...props}>
             <img className="rounded-xl aspect-[3/2] object-cover" src={article.image_url || noImage} alt={article.title} />
-            <div className="flex flex-col gap-4 col-span-3">
-                <h1 className="text-3xl font-medium text-white group-hover:underline">{article.title}</h1>
-                <div className="flex gap-5">
-                    <div className="flex items-center text-sm gap-1.5">
+            <div className="flex flex-col gap-4 md:col-span-3">
+                <h1 className="text-xl md:text-3xl font-medium text-white group-hover:underline">{article.title}</h1>
+                <div className="flex gap-5 flex-wrap">
+                    <div className="flex items-center text-xs md:text-sm gap-1.5">
                         <CalendarDaysIcon className="w-5 text-gray-300" /><p className="text-gray-300">{formatDate(new Date(article.pubDate))}</p>
                     </div>
                     {article.creator?.length > 0 &&
-                        <div className="flex items-center text-sm gap-1.5">
+                        <div className="flex items-center text-xs md:text-sm gap-1.5">
                             <PencilIcon className="w-5 text-gray-300" /><p className="text-gray-300">{article.creator[0]}</p>
                         </div>
                     }
                     {
                         article.country?.length > 0 &&
-                        <div className="flex items-center text-sm gap-1.5">
+                        <div className="flex items-center text-xs md:text-sm gap-1.5">
                             <MapPinIcon className="w-5 text-gray-300" /><p className="text-gray-300">{capitalize(article.country[0])}</p>
                         </div>
                     }
-                    <div className="flex items-center text-sm gap-1.5">
+                    <div className="flex items-center text-xs md:text-sm gap-1.5">
                         <TagIcon className="w-5 text-gray-300" /><p className="text-gray-300">{article.category.map(a => capitalize(a)).join(", ")}</p>
                     </div>
                 </div>
-                <p className="text-gray-400" dangerouslySetInnerHTML={{ __html: article.description }}></p>
+                <p className="text-sm md:text-md text-gray-400" dangerouslySetInnerHTML={{ __html: article.description }}></p>
             </div>
         </div>
     );

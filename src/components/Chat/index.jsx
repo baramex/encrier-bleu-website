@@ -117,7 +117,7 @@ function Message({ message, user, scroll, behavior }) {
 
     return (<div ref={messageRef}>
         <div className={clsx("flex", isMe ? "justify-end" : "justify-start")}>
-            <div className="flex flex-col min-w-[40%]">
+            <div className="flex flex-col w-full md:w-auto md:min-w-[40%]">
                 <div className={clsx("py-3 px-5", isMe ? "bg-indigo-50 rounded-tl-2xl rounded-br-2xl rounded-bl-md" : "border border-indigo-50 rounded-tr-2xl rounded-bl-2xl rounded-br-md")}>
                     {!isMe ? <div className="flex gap-2 mb-2 font-medium items-center"><UserCircleIcon className="w-7 text-white" /><p className="text-white text-lg">{message.author.username}</p></div> : null}
                     <p className={clsx(isMe ? "text-indigo-900" : "text-white")}>{message.content}</p>
