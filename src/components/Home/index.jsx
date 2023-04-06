@@ -230,7 +230,7 @@ function Article({ article, ...props }) {
                         <TagIcon className="w-5 text-gray-300" /><p className="text-gray-300">{article.category.map(a => capitalize(a)).join(", ")}</p>
                     </div>
                 </div>
-                <p className="text-sm md:text-md text-gray-400" dangerouslySetInnerHTML={{ __html: article.description }}></p>
+                <p style={{ overflowWrap: "anywhere" }} className="text-sm md:text-md text-gray-400" dangerouslySetInnerHTML={{ __html: article.description }}></p>
             </div>
         </div>
     );
