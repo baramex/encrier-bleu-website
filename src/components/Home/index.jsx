@@ -227,7 +227,7 @@ function Article({ article, ...props }) {
                         </div>
                     }
                     <div className="flex items-center text-xs md:text-sm gap-1.5">
-                        <TagIcon className="w-5 text-gray-300" /><p className="text-gray-300">{article.category.map(a => capitalize(a)).join(", ")}</p>
+                        <TagIcon className="w-5 text-gray-300" /><p className="text-gray-300">{(article?.category.length > 0 ? article.category : article?.tags.length > 0 ? article.tags : article?.keywords)?.map(a => capitalize(a)).join(", ")}</p>
                     </div>
                 </div>
                 <p style={{ overflowWrap: "anywhere" }} className="text-sm md:text-md text-gray-400" dangerouslySetInnerHTML={{ __html: article.description }}></p>
