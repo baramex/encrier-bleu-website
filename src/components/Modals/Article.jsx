@@ -36,7 +36,7 @@ export default function ArticleModal({ onClose, article: _article, open, addAler
                         </div>
                     }
                     <div className="flex flex-1 items-center text-sm gap-1.5">
-                        <TagIcon className="w-5 text-gray-300" /><p className="text-gray-300">{article?.category.map(a => capitalize(a)).join(", ")}</p>
+                        <TagIcon className="w-5 text-gray-300" /><p className="text-gray-300">{(article?.category.length > 0 ? article.category : article?.tags.length > 0 ? article.tags : article?.keywords)?.map(a => capitalize(a)).join(", ")}</p>
                     </div>
                     <button onClick={() => navigator.clipboard.writeText(document.location.origin + "/?article=" + article._id).then(() => addAlert({ ephemeral: true, type: "success", title: "Lien copié dans le presse-papier !" })).catch(() => addAlert({ ephemeral: true, type: "error", title: "Impossible de copier le lien." }))} className="flex items-center text-sm gap-1.5">
                         <ShareIcon className="w-5 text-gray-300" /><p className="text-gray-300">Partager</p>
